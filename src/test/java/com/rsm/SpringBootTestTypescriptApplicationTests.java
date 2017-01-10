@@ -25,38 +25,38 @@ public class SpringBootTestTypescriptApplicationTests {
 
 	@Test
 	public void getEndPoints() {
-configuration.resourceMappings().forEach(c -> {
-			
+		configuration.resourceMappings().forEach(c -> {
+
 			String className = c.getDomainType().getName();
-			
+
 			try {
-				Class<?> entityClass  = Class.forName(className);
-				
+				Class<?> entityClass = Class.forName(className);
+
 				Field[] fields = entityClass.getDeclaredFields();
-				
+
 				File tsClassDir = new File("data/tsClass");
 				File tsClass = new File(tsClassDir, entityClass.getSimpleName() + ".ts");
-				
-				if(!tsClassDir.getParentFile().exists()){
+
+				if (!tsClassDir.getParentFile().exists()) {
 					tsClass.getParentFile().mkdirs();
 				}
-				
+
 				tsClass.createNewFile();
-				
+
 				String code = "export interface " + entityClass.getSimpleName() + "{\n";
-				
-				for (Field field : fields){
+
+				for (Field field : fields) {
 					try {
 						Class<?> fieldClass = Class.forName(field.getType().getName());
 						code += "\t" + field.getName() + ": " + fieldClass.getSimpleName() + ";" + "\n";
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
-					
+
 				}
-				
+
 				code += "}";
-				
+
 				Files.write(tsClass.toPath(), code.getBytes());
 				System.err.println(code);
 			} catch (Exception e) {
