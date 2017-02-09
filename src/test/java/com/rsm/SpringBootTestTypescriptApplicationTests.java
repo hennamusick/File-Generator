@@ -68,7 +68,7 @@ public class SpringBootTestTypescriptApplicationTests {
 		});
 	}
 
-	@Inject
+	@Test
 	public void initializing() throws Exception {
 		this.mockMvc.perform(get("/users")).accept(MediaType.TEXT_PLAIN)
 					.andExpect(status().isOk());
