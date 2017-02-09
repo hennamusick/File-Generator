@@ -23,6 +23,9 @@ public class SpringBootTestTypescriptApplicationTests {
 	@Inject
 	RepositoryRestMvcConfiguration configuration;
 
+	@Inject
+	private MockMvc mockMvc; 
+
 	@Test
 	public void getEndPoints() {
 		configuration.resourceMappings().forEach(c -> {
@@ -63,5 +66,12 @@ public class SpringBootTestTypescriptApplicationTests {
 				// TODO: handle exception
 			}
 		});
+	}
+
+	@Inject
+	public void initializing() throws Exception {
+		this.mockMvc.perform(get("/users")).accept(MediaType.TEXT_PLAIN)
+					.andExpect(status().isOk());
+
 	}
 }
